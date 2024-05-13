@@ -21,7 +21,7 @@ app.get('/getmusic', async (req, res) => {
     const albumData = await spotifyApi.getAlbum(albumId);
 
     // Retrieve tracks of the album
-    const albumTracks = await spotifyApi.getAlbumTracks(albumId, { limit: 10 });
+    const albumTracks = await spotifyApi.getAlbumTracks(albumId, { limit: 30 });
 
     const tracksData = albumTracks.body.items.map(track => ({
       id: track.id,
@@ -49,27 +49,15 @@ app.get('/getmusic', async (req, res) => {
 });
 
 // Redirect user to Spotify for authorization
-app.get('/login', (req, res) => {
-  res.redirect(authorizeURL);
-});
-
-// Callback route after authorization
-app.get('/callback', async (req, res) => {
-  const { code } = req.query;
+app.get('/login', async (req, res) => {
   try {
-    const data = await spotifyApi.authorizationCodeGrant(code);
+    const data = await spotifyApi.clientCredentialsGrant();
     const accessToken = data.body['access_token'];
-    const refreshToken = data.body['refresh_token'];
-
-    // Set access token to be used for further requests
     spotifyApi.setAccessToken(accessToken);
-    spotifyApi.setRefreshToken(refreshToken);
-
-    // Redirect or respond as needed
     res.redirect('/getmusic');
   } catch (err) {
     console.error('Error occurred:', err);
-    res.status(500).json({ error: 'An error occurred during authorization.' });
+    res.status(500).json({ error: 'An error occurred while fetching access token.' });
   }
 });
 
