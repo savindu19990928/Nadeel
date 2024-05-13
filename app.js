@@ -2,7 +2,7 @@ const express = require('express');
 const SpotifyWebApi = require('spotify-web-api-node');
 
 const app = express();
-const port = 3000; // or any other port you prefer
+const port = 3000;
 
 // Spotify API setup
 const spotifyApi = new SpotifyWebApi({
