@@ -15,7 +15,7 @@ const spotifyApi = new SpotifyWebApi({
 const authorizeURL = spotifyApi.createAuthorizeURL(['user-read-private', 'user-read-email'], 'state');
 
 app.get('/getmusic', async (req, res) => {
-  const albumId = '1010101';
+  const albumId = '2hstKFT7GOo34ZyFbMTXWN';
   try {
     // Retrieve metadata of the album
     const albumData = await spotifyApi.getAlbum(albumId);
